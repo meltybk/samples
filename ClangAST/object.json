@@ -1,0 +1,31 @@
+{
+  "class": [
+    {
+      "field": [
+        {
+          "name": "position_",
+          "type": "std::array<float, 3>"
+        }
+      ],
+      "function": [
+        {
+          "name": "GameObject"
+        },
+        {
+          "name": "~GameObject"
+        },
+        {
+          "name": "operator="
+        },
+        {
+          "name": "position"
+        },
+        {
+          "name": "set_position"
+        }
+      ],
+      "name": "GameObject",
+      "qualified_name": "melty::sample::GameObject"
+    }
+  ]
+}
