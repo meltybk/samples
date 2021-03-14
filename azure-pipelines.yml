@@ -24,6 +24,14 @@ jobs:
         solution: 'AddressSanitizer/AddressSanitizer.sln'
         msbuildArchitecture: 'x64'
         configuration: '$(MSBuildConfiguration)'
+- job:
+  strategy:
+    matrix:
+      Debug:
+        MSBuildConfiguration: Debug
+      Release:
+        MSBuildConfiguration: Release
+  steps:
     - task: MSBuild@1
       displayName: 'MSBuild Likely'
       inputs:
