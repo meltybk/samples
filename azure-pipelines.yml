@@ -13,9 +13,9 @@ jobs:
 - job:
   strategy:
     matrix:
-      Debug:
+      AddressSanitizer Debug:
         MSBuildConfiguration: Debug
-      Release:
+      AddressSanitizer Release:
         MSBuildConfiguration: Release
   steps:
     - task: MSBuild@1
@@ -27,9 +27,9 @@ jobs:
 - job:
   strategy:
     matrix:
-      Debug:
+      Likely Debug:
         MSBuildConfiguration: Debug
-      Release:
+      Likely Release:
         MSBuildConfiguration: Release
   steps:
     - task: MSBuild@1
