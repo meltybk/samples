@@ -1,0 +1,32 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+jobs:
+- job:
+  strategy:
+    matrix:
+      Debug:
+        MSBuildConfiguration: Debug
+      Release:
+        MSBuildConfiguration: Release
+  steps:
+    - task: MSBuild@1
+      displayName: 'MSBuild AddressSanitizer'
+      inputs:
+        solution: 'AddressSanitizer/AddressSanitizer.sln'
+        msbuildArchitecture: 'x64'
+        configuration: '$(MSBuildConfiguration)'
+    - task: MSBuild@1
+      displayName: 'MSBuild Likely'
+      inputs:
+        solution: 'Likely/Likely.sln'
+        msbuildArchitecture: 'x64'
+        configuration: '$(MSBuildConfiguration)'
