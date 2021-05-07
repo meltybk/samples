@@ -45,22 +45,11 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-      - script: |
-          brew install ninja cmake
-          cmake --version
-        displayName: 'Install Ninja build system'
-      - task: CMake@1
+      - script: brew install ninja cmake
+        displayName: 'Install Ninja and CMake'
+      - script: cmake -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/out/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/out/build/clang-linux -G "Ninja Multi-Config"
         displayName: 'CMake Configure clang-linux'
-        inputs:
-          workingDirectory: 'build'
-          cmakeArgs: -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/out/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/out/build/clang-linux -G "Ninja Multi-Config"
-      - task: CMake@1
+      - script: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
         displayName: 'CMake Build Debug clang-linux'
-        inputs:
-          workingDirectory: 'build'
-          cmakeArgs: --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
-      - task: CMake@1
+      - script: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Release
         displayName: 'CMake Build Release clang-linux'
-        inputs:
-          workingDirectory: 'build'
-          cmakeArgs: --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Release
