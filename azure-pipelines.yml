@@ -8,12 +8,9 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-      - bash: |
-          brew install ninja cmake
+      - bash: brew install ninja cmake
         displayName: 'Install Ninja and CMake'
-      - bash: |
-          cd CMakePresets
-          cmake --preset clang-linux
+      - bash: cmake -S $(Build.SourcesDirectory)/CMakePresets --preset clang-linux
         displayName: 'CMakePresets Configure clang-linux'
       - bash: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
         displayName: 'CMakePresets Build Debug clang-linux'
