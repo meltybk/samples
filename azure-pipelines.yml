@@ -6,35 +6,57 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-latest'
-
-jobs:
-- job:
-  strategy:
-    matrix:
-      AddressSanitizer Debug:
-        MSBuildConfiguration: Debug
-      AddressSanitizer Release:
-        MSBuildConfiguration: Release
-  steps:
-    - task: MSBuild@1
-      displayName: 'MSBuild AddressSanitizer'
-      inputs:
-        solution: 'AddressSanitizer/AddressSanitizer.sln'
-        msbuildArchitecture: 'x64'
-        configuration: '$(MSBuildConfiguration)'
-- job:
-  strategy:
-    matrix:
-      Likely Debug:
-        MSBuildConfiguration: Debug
-      Likely Release:
-        MSBuildConfiguration: Release
-  steps:
-    - task: MSBuild@1
-      displayName: 'MSBuild Likely'
-      inputs:
-        solution: 'Likely/Likely.sln'
-        msbuildArchitecture: 'x64'
-        configuration: '$(MSBuildConfiguration)'
+stages:
+- stage: MSBuild
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    strategy:
+      matrix:
+        AddressSanitizer Debug:
+          MSBuildConfiguration: Debug
+        AddressSanitizer Release:
+          MSBuildConfiguration: Release
+    steps:
+      - task: MSBuild@1
+        displayName: 'MSBuild AddressSanitizer'
+        inputs:
+          solution: 'AddressSanitizer/AddressSanitizer.sln'
+          msbuildArchitecture: 'x64'
+          configuration: '$(MSBuildConfiguration)'
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    strategy:
+      matrix:
+        Likely Debug:
+          MSBuildConfiguration: Debug
+        Likely Release:
+          MSBuildConfiguration: Release
+    steps:
+      - task: MSBuild@1
+        displayName: 'MSBuild Likely'
+        inputs:
+          solution: 'Likely/Likely.sln'
+          msbuildArchitecture: 'x64'
+          configuration: '$(MSBuildConfiguration)'
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: CMake@1
+        displayName: 'CMake Configure clang-linux'
+        inputs:
+          workingDirectory: 'build'
+          cmakeArgs: -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/out/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/out/build/clang-linux -G "Ninja Multi-Config"
+      - task: CMake@1
+        displayName: 'CMake Build Debug clang-linux'
+        inputs:
+          workingDirectory: 'build'
+          cmakeArgs: --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
+      - task: CMake@1
+        displayName: 'CMake Build Release clang-linux'
+        inputs:
+          workingDirectory: 'build'
+          cmakeArgs: --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Release
