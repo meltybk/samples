@@ -45,6 +45,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+      - script: brew install ninja
+        displayName: 'Install Ninja build system'
       - task: CMake@1
         displayName: 'CMake Configure clang-linux'
         inputs:
