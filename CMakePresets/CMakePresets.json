@@ -8,6 +8,7 @@
       "generator": "Ninja Multi-Config",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
+        "CMAKE_MAKE_PROGRAM": "/bin/ninja",
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/clang.cmake",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
       }

@@ -2,6 +2,21 @@ trigger:
 - master
 
 stages:
+- stage: Linux
+  jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - bash: |
+          brew install ninja cmake
+        displayName: 'Install Ninja and CMake and Clang 11'
+      - bash: cmake -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/samples/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/build/clang-linux -G "Ninja Multi-Config"
+        displayName: 'CMakePresets Configure clang-linux'
+      - bash: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
+        displayName: 'CMakePresets Build Debug clang-linux'
+      - bash: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Release
+        displayName: 'CMakePresets Build Release clang-linux'
 - stage: Windows
   jobs:
   - job:
@@ -36,20 +51,3 @@ stages:
           solution: 'Likely/Likely.sln'
           msbuildArchitecture: 'x64'
           configuration: '$(MSBuildConfiguration)'
-- stage: Linux
-  jobs:
-  - job:
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-      - script: |
-          brew install ninja cmake
-          sudo apt-get update
-          sudo apt-get install clang-11
-        displayName: 'Install Ninja and CMake and Clang 11'
-      - script: cmake -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/samples/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/build/clang-linux -G "Ninja Multi-Config"
-        displayName: 'CMakePresets Configure clang-linux'
-      - script: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
-        displayName: 'CMakePresets Build Debug clang-linux'
-      - script: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Release
-        displayName: 'CMakePresets Build Release clang-linux'
