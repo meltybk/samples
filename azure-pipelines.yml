@@ -11,7 +11,9 @@ stages:
       - bash: |
           brew install ninja cmake
         displayName: 'Install Ninja and CMake'
-      - bash: cmake -S $(Build.SourcesDirectory)/CMakePresets --preset clang-linux
+      - bash: |
+          cd CMakePresets
+          cmake -S $(Build.SourcesDirectory)/CMakePresets --preset clang-linux
         displayName: 'CMakePresets Configure clang-linux'
       - bash: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
         displayName: 'CMakePresets Build Debug clang-linux'
