@@ -10,7 +10,7 @@ stages:
     steps:
       - bash: |
           brew install ninja cmake
-        displayName: 'Install Ninja and CMake and Clang 11'
+        displayName: 'Install Ninja and CMake'
       - bash: cmake -DCMAKE_TOOLCHAIN_FILE=$(Build.SourcesDirectory)/CMakePresets/cmake/clang.cmake -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/CMakePresets/install/clang-linux -H$(Build.SourcesDirectory)/CMakePresets -B$(Build.SourcesDirectory)/CMakePresets/build/clang-linux -G "Ninja Multi-Config"
         displayName: 'CMakePresets Configure clang-linux'
       - bash: cmake --build $(Build.SourcesDirectory)/CMakePresets/build/clang-linux --config Debug
