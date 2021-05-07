@@ -1,5 +1,4 @@
-// AddressSanitizer.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/// main.cc
 
 int main()
 {
