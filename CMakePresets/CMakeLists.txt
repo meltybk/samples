@@ -8,4 +8,8 @@ set(CMAKE_CONFIGURATION_TYPES Debug;Release)
 
 set(sources main.cc)
 
-add_executable(sample ${sources})
+add_executable(Sample ${sources})
+
+if(UNIX)
+  target_link_libraries(Sample PRIVATE stdc++)
+endif()
