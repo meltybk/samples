@@ -19,13 +19,15 @@
       "name": "debug",
       "description": "Debug build with Clang for Linux",
       "displayName": "Debug Clang Linux",
-      "configurePreset": "clang-linux"
+      "configurePreset": "clang-linux",
+      "configuration": "Debug"
     },
     {
       "name": "release",
       "description": "Release build with Clang for Linux",
       "displayName": "Release Clang Linux",
-      "configurePreset": "clang-linux"
+      "configurePreset": "clang-linux",
+      "configuration": "Release"
     }
   ]
 }
